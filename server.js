@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // eBay API configuration
-const EBAY_APP_ID = 'AshtonRe-RandomPu-SBX-dc5825f8b-cca316a7';
+const EBAY_APP_ID = process.env.EBAY_APP_ID || 'AshtonRe-RandomPu-PRD-aeae9f383-eaca758b';
 
 // Route to get random eBay items
 app.post('/api/random-item', async (req, res) => {
