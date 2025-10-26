@@ -31,7 +31,7 @@ async function fetchRandomItem(apiKey, budget) {
 
   try {
     // Call your server to get real eBay items
-        const response = await fetch('https://your-app-name.herokuapp.com/api/random-item', {
+        const response = await fetch('https://ebay-random-item.onrender.com/api/random-item', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
