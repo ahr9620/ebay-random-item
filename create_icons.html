@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Extension Icons</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    canvas { border: 1px solid #ccc; margin: 10px; }
+    button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Generate Extension Icons</h1>
+  <p>Click the buttons below to download icon files:</p>
+  
+  <canvas id="canvas16" width="16" height="16"></canvas>
+  <canvas id="canvas48" width="48" height="48"></canvas>
+  <canvas id="canvas128" width="128" height="128"></canvas>
+  
+  <div>
+    <button onclick="downloadIcon(16)">Download icon16.png</button>
+    <button onclick="downloadIcon(48)">Download icon48.png</button>
+    <button onclick="downloadIcon(128)">Download icon128.png</button>
+  </div>
+
+  <script>
+    function createIcon(size) {
+      const canvas = document.getElementById(`canvas${size}`);
+      const ctx = canvas.getContext('2d');
+      
+      // Red background (eBay red)
+      ctx.fillStyle = '#e53238';
+      ctx.fillRect(0, 0, size, size);
+      
+      // Blue accent (eBay blue)
+      ctx.fillStyle = '#0064d2';
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/3, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // White letter 'E'
+      ctx.fillStyle = 'white';
+      ctx.font = `bold ${size * 0.4}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('E', size/2, size/2);
+    }
+
+    function downloadIcon(size) {
+      const canvas = document.getElementById(`canvas${size}`);
+      const link = document.createElement('a');
+      link.download = `icon${size}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+
+    // Create icons on load
+    createIcon(16);
+    createIcon(48);
+    createIcon(128);
+  </script>
+</body>
+</html>
+
+
