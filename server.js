@@ -30,7 +30,15 @@ app.post('/api/random-item', async (req, res) => {
     apiUrl.searchParams.set('SERVICE-VERSION', '1.0.0');
     apiUrl.searchParams.set('SECURITY-APPNAME', EBAY_APP_ID);
     apiUrl.searchParams.set('RESPONSE-DATA-FORMAT', 'JSON');
-    apiUrl.searchParams.set('keywords', '*');
+    // Add interesting search terms to filter out reseller items
+    const searchTerms = [
+      'vintage', 'antique', 'retro', 'classic', 'collectible', 'rare', 'unique',
+      'handmade', 'artisan', 'original', 'authentic', 'genuine', 'one-of-a-kind',
+      'limited edition', 'discontinued', '1950s', '1960s', '1970s', '1980s', '1990s',
+      'mid-century', 'Victorian', 'Art Deco', 'steampunk', 'bohemian', 'rustic'
+    ];
+    const randomTerm = searchTerms[Math.floor(Math.random() * searchTerms.length)];
+    apiUrl.searchParams.set('keywords', randomTerm);
     apiUrl.searchParams.set('paginationInput.entriesPerPage', '10');
     apiUrl.searchParams.set('itemFilter(0).name', 'MaxPrice');
     apiUrl.searchParams.set('itemFilter(0).value', maxPrice.toFixed(2));
