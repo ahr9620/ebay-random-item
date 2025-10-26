@@ -100,18 +100,17 @@ app.post('/api/random-item', async (req, res) => {
       return priceB - priceA; // Sort descending (highest price first)
     });
 
-    // Pick a random item from the top 20% closest to budget
-    const topItems = sortedItems.slice(0, Math.max(1, Math.floor(sortedItems.length * 0.2)));
-    const randomItem = topItems[Math.floor(Math.random() * topItems.length)];
+    // Pick the top item (first result)
+    const topItem = sortedItems[0];
 
     // Return the item data
     const itemData = {
-      title: randomItem.title[0],
-      price: parseFloat(randomItem.sellingStatus[0].currentPrice[0].__value__),
-      currency: randomItem.sellingStatus[0].currentPrice[0]['@currencyId'],
-      image: randomItem.galleryURL ? randomItem.galleryURL[0] : 'https://via.placeholder.com/150',
-      url: randomItem.viewItemURL[0],
-      condition: randomItem.condition ? randomItem.condition[0].conditionDisplayName[0] : 'Not specified',
+      title: topItem.title[0],
+      price: parseFloat(topItem.sellingStatus[0].currentPrice[0].__value__),
+      currency: topItem.sellingStatus[0].currentPrice[0]['@currencyId'],
+      image: topItem.galleryURL ? topItem.galleryURL[0] : 'https://via.placeholder.com/150',
+      url: topItem.viewItemURL[0],
+      condition: topItem.condition ? topItem.condition[0].conditionDisplayName[0] : 'Not specified',
       isRealEbayItem: true
     };
 
