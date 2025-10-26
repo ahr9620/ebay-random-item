@@ -58,6 +58,7 @@ app.post('/api/random-item', async (req, res) => {
     // Make request to eBay API with user token
     const response = await fetch(apiUrl.toString(), {
       headers: {
+        'Authorization': `Bearer ${EBAY_USER_TOKEN}`,
         'X-EBAY-API-IAF-TOKEN': EBAY_USER_TOKEN
       }
     });
