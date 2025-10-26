@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // eBay API configuration
-const EBAY_APP_ID = process.env.EBAY_APP_ID || 'AshtonRe-RandomPu-SBX-dc5825f8b-cca316a7';
+const EBAY_APP_ID = process.env.EBAY_APP_ID || 'AshtonRe-RandomPu-PRD-aeae9f383-eaca758b';
 
 // Route to get random eBay items
 app.post('/api/random-item', async (req, res) => {
@@ -24,8 +24,8 @@ app.post('/api/random-item', async (req, res) => {
     const minPrice = Math.max(1, budget * 0.8);
     const maxPrice = budget;
 
-    // Build eBay API URL for sandbox environment (temporary)
-    const apiUrl = new URL('https://svcs.sandbox.ebay.com/services/search/FindingService/v1');
+    // Build eBay API URL for production environment
+    const apiUrl = new URL('https://svcs.ebay.com/services/search/FindingService/v1');
     apiUrl.searchParams.set('OPERATION-NAME', 'findItemsAdvanced');
     apiUrl.searchParams.set('SERVICE-VERSION', '1.0.0');
     apiUrl.searchParams.set('SECURITY-APPNAME', EBAY_APP_ID);
@@ -55,6 +55,16 @@ app.post('/api/random-item', async (req, res) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.log('eBay API error response:', errorText);
+      
+      // Check if it's a rate limit error
+      if (errorText.includes('exceeded the number of times') || errorText.includes('RateLimiter')) {
+        console.log('Rate limit exceeded - returning error message');
+        return res.status(429).json({ 
+          error: 'eBay API rate limit exceeded. Please try again later or contact support for higher limits.',
+          rateLimitExceeded: true 
+        });
+      }
+      
       console.log('eBay API failed, using fallback approach');
       // Fallback to realistic items that link to eBay searches
       const fallbackItem = generateFallbackItem(budget);
