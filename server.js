@@ -10,7 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // eBay API configuration
-const EBAY_APP_ID = process.env.EBAY_APP_ID || 'AshtonRe-RandomPu-SBX-dc5825f8b-cca316a7';
+const EBAY_APP_ID = process.env.EBAY_APP_ID || 'AshtonRe-RandomPu-PRD-aeae9f383-eaca758b';
+const EBAY_USER_TOKEN = process.env.EBAY_USER_TOKEN || 'v^1.1#i^1#p^3#r^1#f^0#I^3#t^Ul4xMF81OjlGRjM4QkZFNjc0QkY3RDk1QUFGQkEyQ0MzRTlFNzZDXzFfMSNFXjI2MA==';
 
 // Route to get random eBay items
 app.post('/api/random-item', async (req, res) => {
@@ -24,8 +25,8 @@ app.post('/api/random-item', async (req, res) => {
     const minPrice = Math.max(1, budget * 0.8);
     const maxPrice = budget;
 
-    // Build eBay API URL for sandbox environment (temporary - need user token for production)
-    const apiUrl = new URL('https://svcs.sandbox.ebay.com/services/search/FindingService/v1');
+    // Build eBay API URL for production environment
+    const apiUrl = new URL('https://svcs.ebay.com/services/search/FindingService/v1');
     apiUrl.searchParams.set('OPERATION-NAME', 'findItemsAdvanced');
     apiUrl.searchParams.set('SERVICE-VERSION', '1.0.0');
     apiUrl.searchParams.set('SECURITY-APPNAME', EBAY_APP_ID);
@@ -54,8 +55,12 @@ app.post('/api/random-item', async (req, res) => {
 
     console.log('Fetching from eBay API:', apiUrl.toString());
 
-    // Make request to eBay API
-    const response = await fetch(apiUrl.toString());
+    // Make request to eBay API with user token
+    const response = await fetch(apiUrl.toString(), {
+      headers: {
+        'X-EBAY-API-IAF-TOKEN': EBAY_USER_TOKEN
+      }
+    });
     
     console.log('eBay API response status:', response.status);
     console.log('eBay API response headers:', Object.fromEntries(response.headers.entries()));
