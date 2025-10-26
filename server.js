@@ -31,7 +31,7 @@ app.post('/api/random-item', async (req, res) => {
     apiUrl.searchParams.set('SECURITY-APPNAME', EBAY_APP_ID);
     apiUrl.searchParams.set('RESPONSE-DATA-FORMAT', 'JSON');
     apiUrl.searchParams.set('keywords', '*');
-    apiUrl.searchParams.set('paginationInput.entriesPerPage', '100');
+    apiUrl.searchParams.set('paginationInput.entriesPerPage', '10');
     apiUrl.searchParams.set('itemFilter(0).name', 'MaxPrice');
     apiUrl.searchParams.set('itemFilter(0).value', maxPrice.toFixed(2));
     apiUrl.searchParams.set('itemFilter(1).name', 'MinPrice');
